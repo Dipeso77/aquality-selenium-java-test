@@ -19,7 +19,7 @@ public class DownloadPdfFileTest extends BaseTest {
     private final By searchField= By.name("search");
     private final By searchButton = By.xpath("//button[@type='submit']");
     private final By toolPage = By.xpath("//input[@id='vector-page-tools-dropdown-checkbox']");
-    private final By downloadPdfButton = By.id("coll-download-as-rl");
+    private final By downloadPdfButton = By.className("pdf-download-button");
     private final By downloadButton= By.xpath("//button[@type='submit']");
     private final By dowloadedFileX = By.xpath("//div[@class='mw-electronpdfservice-selection-label-desc']");
 
