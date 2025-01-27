@@ -18,7 +18,8 @@ public class AuthenticationForm extends Form {
         txbEmail.typeSecret(email);
         txbEmail.clearAndType(email);
     }
-
+//smth
+    //add smth good
     public void clickCreateAccountBtn(){
         btnCreateAcc.clickAndWait();
     }
