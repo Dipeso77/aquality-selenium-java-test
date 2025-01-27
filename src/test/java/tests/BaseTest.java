@@ -1,54 +1,39 @@
 package tests;
 
-import aquality.selenium.browser.AqualityServices;
-import aquality.selenium.browser.Browser;
-import aquality.selenium.elements.interfaces.IElementFactory;
-import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import theinternet.TheInternetPage;
 
-import java.io.IOException;
-
-import static utils.FileUtil.getResourceFileByName;
+import java.io.File;
+import java.time.Duration;
+import java.util.HashMap;
 
 public abstract class BaseTest {
-    private static final String DEFAULT_URL = TheInternetPage.LOGIN.getAddress();
-
-    protected final Dimension defaultSize = new Dimension(1024, 768);
-    protected final IElementFactory elementFactory;
-
-    protected BaseTest() {
-        elementFactory = AqualityServices.getElementFactory();
-    }
+    protected static final String URL = "https://www.wikipedia.org/";
+    protected static final int MAX_WAIT = 10;
+    protected static final String RELATIVE_RESOURCE_PATH = "src/test/resources";
+    protected WebDriver driver;
+    protected WebDriverWait wait;
 
     @BeforeMethod
-    protected void beforeMethod() {
-        getBrowser().goTo(DEFAULT_URL);
-        getBrowser().setWindowSize(defaultSize.width, defaultSize.height);
+    public void setup() {
+        HashMap<String, Object> chromePrefs = new HashMap<>();
+        chromePrefs.put("download.default_directory", new File(RELATIVE_RESOURCE_PATH).getAbsolutePath());
+
+        ChromeOptions options = new ChromeOptions();
+        options.setExperimentalOption("prefs", chromePrefs);
+
+        driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(MAX_WAIT));
+        driver.get(URL);
     }
 
     @AfterMethod
-    public void afterTest() {
-        if (AqualityServices.isBrowserStarted()) {
-            AqualityServices.getBrowser().quit();
-        }
-    }
-
-    protected void navigate(TheInternetPage page) {
-        getBrowser().goTo(page.getAddress());
-    }
-
-    protected Browser getBrowser() {
-        return AqualityServices.getBrowser();
-    }
-
-    @SuppressWarnings("unchecked")
-    protected <T> T getScriptResultOrDefault(String scriptName, T defaultValue, Object... arguments) {
-        try {
-            return ((T) getBrowser().executeScript(getResourceFileByName(scriptName), arguments));
-        } catch (IOException e) {
-            return defaultValue;
-        }
+    public void teardown() {
+        driver.quit();
     }
 }
