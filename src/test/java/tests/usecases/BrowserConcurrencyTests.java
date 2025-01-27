@@ -38,7 +38,6 @@ public class BrowserConcurrencyTests {
         List<ILabel> textBoxes = AqualityServices.getElementFactory().findElements(By.xpath("//td"), ElementType.LABEL);
         List<String> texts = new ArrayList<>();
         textBoxes.parallelStream().forEach(lbl -> {
-            // set the same instance of browser for all threads
             AqualityServices.setBrowser(browser);
             String text = lbl.getText(HighlightState.NOT_HIGHLIGHT);
             String updatedText = text  + "_updated";
