@@ -41,7 +41,6 @@ public class BrowserConcurrencyTests {
             // set the same instance of browser for all threads
             AqualityServices.setBrowser(browser);
             String text = lbl.getText(HighlightState.NOT_HIGHLIGHT);
-            // processing results of work trough web driver (getting text)
             String updatedText = text  + "_updated";
             texts.add(text);
             texts.add(updatedText);
